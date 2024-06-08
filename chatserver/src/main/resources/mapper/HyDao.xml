@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncu.chatserver.dao.HyDao">
+  <!-- 定义 resultMap -->
+  <resultMap id="HyyzVoMap" type="com.ncu.chatserver.entity.HyyzVo">
+    <result column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="hy_user_id" property="hyUserId"/>
+    <result column="nr" property="nr"/>
+    <result column="zt" property="zt"/>
+    <result column="hy_group_name" property="hyGroupName"/>
+    <result column="role" property="role"/>
+    <result column="userId" property="userId"/>
+    <result column="userName" property="userName"/>
+    <result column="userAvatar" property="userAvatar"/>
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.ncu.chatserver.entity.Hy">
+    <!--@mbg.generated-->
+    <!--@Table hy-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="hy_user_id" jdbcType="INTEGER" property="hyUserId" />
+    <result column="nr" jdbcType="VARCHAR" property="nr" />
+    <result column="zt" jdbcType="CHAR" property="zt" />
+    <result column="hy_group_name" jdbcType="VARCHAR" property="hyGroupName"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_id, hy_user_id, nr, zt, hy_group_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from hy
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from hy
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.ncu.chatserver.entity.Hy" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into hy (user_id, hy_user_id, nr,
+      zt, hy_group_name)
+    values (#{userId,jdbcType=INTEGER}, #{hyUserId,jdbcType=INTEGER}, #{nr,jdbcType=VARCHAR},
+      #{zt,jdbcType=CHAR}, #{hyGroupName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.ncu.chatserver.entity.Hy" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into hy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="hyUserId != null">
+        hy_user_id,
+      </if>
+      <if test="nr != null and nr != ''">
+        nr,
+      </if>
+      <if test="zt != null and zt != ''">
+        zt,
+      </if>
+      <if test="hyGroupName != null and hyGroupName != ''">
+        hy_group_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="hyUserId != null">
+        #{hyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="nr != null and nr != ''">
+        #{nr,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null and zt != ''">
+        #{zt,jdbcType=CHAR},
+      </if>
+      <if test="hyGroupName != null and hyGroupName != ''">
+        #{hyGroupName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ncu.chatserver.entity.Hy">
+    <!--@mbg.generated-->
+    update hy
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="hyUserId != null">
+        hy_user_id = #{hyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="nr != null and nr != ''">
+        nr = #{nr,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null and zt != ''">
+        zt = #{zt,jdbcType=CHAR},
+      </if>
+      <if test="hyGroupName != null and hyGroupName != ''">
+        hy_group_name = #{hyGroupName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ncu.chatserver.entity.Hy">
+    <!--@mbg.generated-->
+    update hy
+    set user_id = #{userId,jdbcType=INTEGER},
+      hy_user_id = #{hyUserId,jdbcType=INTEGER},
+      nr = #{nr,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=CHAR},
+      hy_group_name = #{hyGroupName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update hy
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="user_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when id = #{item.id,jdbcType=INTEGER} then #{item.userId,jdbcType=INTEGER}
+        </foreach>
+      </trim>
+      <trim prefix="hy_user_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when id = #{item.id,jdbcType=INTEGER} then #{item.hyUserId,jdbcType=INTEGER}
+        </foreach>
+      </trim>
+      <trim prefix="nr = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when id = #{item.id,jdbcType=INTEGER} then #{item.nr,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="zt = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when id = #{item.id,jdbcType=INTEGER} then #{item.zt,jdbcType=CHAR}
+        </foreach>
+      </trim>
+      <trim prefix="hy_group_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when id = #{item.id,jdbcType=INTEGER} then #{item.hyGroupName,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+    </trim>
+    where id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.id,jdbcType=INTEGER}
+    </foreach>
+  </update>
+  <update id="updateBatchSelective" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update hy
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="user_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.userId != null">
+            when id = #{item.id,jdbcType=INTEGER} then #{item.userId,jdbcType=INTEGER}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="hy_user_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.hyUserId != null">
+            when id = #{item.id,jdbcType=INTEGER} then #{item.hyUserId,jdbcType=INTEGER}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="nr = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.nr != null">
+            when id = #{item.id,jdbcType=INTEGER} then #{item.nr,jdbcType=VARCHAR}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="zt = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.zt != null">
+            when id = #{item.id,jdbcType=INTEGER} then #{item.zt,jdbcType=CHAR}
+          </if>
+        </foreach>
+      </trim>
+      <trim prefix="hy_group_name = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.hyGroupName != null">
+            when id = #{item.id,jdbcType=INTEGER} then #{item.hyGroupName,jdbcType=VARCHAR}
+          </if>
+        </foreach>
+      </trim>
+    </trim>
+    where id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.id,jdbcType=INTEGER}
+    </foreach>
+  </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into hy
+    (user_id, hy_user_id, nr, zt, hy_group_name)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.userId,jdbcType=INTEGER}, #{item.hyUserId,jdbcType=INTEGER}, #{item.nr,jdbcType=VARCHAR},
+        #{item.zt,jdbcType=CHAR}, #{item.hyGroupName,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" keyColumn="id" keyProperty="id" parameterType="com.ncu.chatserver.entity.Hy" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into hy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      user_id,
+      hy_user_id,
+      nr,
+      zt,
+      hy_group_name,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      #{userId,jdbcType=INTEGER},
+      #{hyUserId,jdbcType=INTEGER},
+      #{nr,jdbcType=VARCHAR},
+      #{zt,jdbcType=CHAR},
+      #{hyGroupName,jdbcType=VARCHAR},
+    </trim>
+    on duplicate key update
+    <trim suffixOverrides=",">
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      user_id = #{userId,jdbcType=INTEGER},
+      hy_user_id = #{hyUserId,jdbcType=INTEGER},
+      nr = #{nr,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=CHAR},
+      hy_group_name = #{hyGroupName,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <insert id="insertOrUpdateSelective" keyColumn="id" keyProperty="id" parameterType="com.ncu.chatserver.entity.Hy" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into hy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="hyUserId != null">
+        hy_user_id,
+      </if>
+      <if test="nr != null and nr != ''">
+        nr,
+      </if>
+      <if test="zt != null and zt != ''">
+        zt,
+      </if>
+      <if test="hyGroupName != null and hyGroupName != ''">
+        hy_group_name,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="hyUserId != null">
+        #{hyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="nr != null and nr != ''">
+        #{nr,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null and zt != ''">
+        #{zt,jdbcType=CHAR},
+      </if>
+      <if test="hyGroupName != null and hyGroupName != ''">
+        #{hyGroupName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    on duplicate key update
+    <trim suffixOverrides=",">
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="hyUserId != null">
+        hy_user_id = #{hyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="nr != null and nr != ''">
+        nr = #{nr,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null and zt != ''">
+        zt = #{zt,jdbcType=CHAR},
+      </if>
+      <if test="hyGroupName != null and hyGroupName != ''">
+        hy_group_name = #{hyGroupName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectHyyzList" resultType="com.ncu.chatserver.entity.HyyzVo">
+      select hy.*,u.id as userId,u.name as userName,u.avatar as userAvatar from hy join user u on hy.user_id = u.id
+      where hy_user_id = #{userId} order by zt
+  </select>
+
+<!--  <select id="selectHyList" resultType="com.ncu.chatserver.entity.HyyzVo">-->
+<!--    select hy.*,u.role,u.id as userId,u.name as userName,u.avatar as userAvatar from hy join user u on hy.user_id = u.id-->
+<!--    where hy_user_id = #{userId} and zt = '1'-->
+<!--    union all-->
+<!--    select hy.*,u.role,u.id as userId,u.name as userName,u.avatar as userAvatar from hy join user u on hy.hy_user_id = u.id-->
+<!--    where user_id = #{userId} and zt = '1'-->
+<!--  </select>-->
+  <select id="selectHyList" resultMap="HyyzVoMap">
+    select hy.*, u.role, u.id as userId, u.name as userName, u.avatar as userAvatar
+    from hy
+           join user u on hy.user_id = u.id
+    where hy.hy_user_id = #{userId} and hy.zt = '1'
+    union all
+    select hy.*, u.role, u.id as userId, u.name as userName, u.avatar as userAvatar
+    from hy
+           join user u on hy.hy_user_id = u.id
+    where hy.user_id = #{userId} and hy.zt = '1'
+  </select>
+
+  <select id="isHy" resultType="int">
+    select count(id) from hy
+    where (user_id = #{userId} or hy_user_id = #{userId}) and (user_id = #{hyUserId} or hy_user_id = #{hyUserId})
+    and zt in ('0','1')
+  </select>
+
+  <!-- 获取分组列表 -->
+  <select id="selectGroupList" resultType="String">
+    SELECT DISTINCT hy_group_name FROM hy WHERE user_id = #{userId}
+  </select>
+
+  <!-- 将该分组的好友移到默认分组 -->
+  <update id="updateGroupToDefault">
+    UPDATE hy SET hy_group_name = '我的好友' WHERE user_id = #{userId} AND hy_group_name = #{groupName}
+  </update>
+
+</mapper>
