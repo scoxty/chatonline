@@ -5,11 +5,9 @@ body {
     color: #666;
     font-family: "Microsoft YaHei UI", serif;
 }
-
 * {
     box-sizing: border-box;
 }
-
 [v-cloak] {
     display: none;
 }

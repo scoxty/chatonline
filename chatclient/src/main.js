@@ -7,10 +7,10 @@ import '@/assets/global.css'
 import '@/assets/fonts/font-awesome.css'
 
 Vue.config.productionTip = false
-Vue.use(ElementUI, { size: "small" });
+Vue.use(ElementUI, { size: "small"});
 Vue.prototype.$bus = new Vue();
 
 new Vue({
-    router,
-    render: h => h(App)
+  router,
+  render: h => h(App)
 }).$mount('#app')

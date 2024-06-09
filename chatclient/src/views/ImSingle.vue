@@ -2,65 +2,37 @@
   <div>
     <div class="main-body-content">
       <div style="display: flex; align-items: flex-start">
-        <div style="
-            width: 200px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            height: calc(50vh + 125px);">
-          <div style="
-              padding: 10px;
-              border-bottom: 1px solid #ddd;
-              color: #000;
-              background-color: #eee;
-            ">
+        <div style="width: 200px; border: 1px solid #ddd; border-radius: 5px; height: calc(50vh + 125px);">
+          <div style="padding: 10px; border-bottom: 1px solid #ddd; color: #000; background-color: #eee;">
             好友
           </div>
           <div class="user-list-box">
             <div class="user-list-item" v-for="item in users.admin" :key="item.id" @click="selectToUser(item)">
               <img :src="item.userAvatar" style="width: 30px; height: 30px; border-radius: 50%" />
               <span style="flex: 1; margin-left: 10px"
-                :style="{ color: item.role + '_' + item.userName === toUser ? '#3a8ee6' : '', }">{{ item.userName }}
-              </span>
-              <div class="user-list-item-badge" v-if="unRead?.[item.role + '_' + item.name]">
-                {{ unRead?.[item.role + "_" + item.name] }}
+                :style="{ color: item.role + '_' + item.userName === toUser ? '#3a8ee6' : '', }">{{ item.userName
+                }}</span>
+              <div class="user-list-item-badge" v-if="unRead?.[item.role + '_' + item.userName]">
+                {{ unRead?.[item.role + '_' + item.userName] }}
               </div>
             </div>
           </div>
         </div>
         <!--  中间部分  -->
-        <div style="
-            width: 50%;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f1f1f1;
-            margin: 0 10px;">
-          <div style="
-              padding: 20px 0;
-              text-align: center;
-              border-bottom: 1px solid #ddd;
-              color: #000;
-              background-color: #eee;
-              height: 60px;
-            ">
+        <div style="width: 50%; border: 1px solid #ddd; border-radius: 5px; background-color: #f1f1f1; margin: 0 10px;">
+          <div
+            style="padding: 20px 0; text-align: center; border-bottom: 1px solid #ddd; color: #000; background-color: #eee; height: 60px;">
             {{ toUser?.substring(toUser.indexOf("_") + 1) }}
           </div>
           <div class="im-message-box">
             <div v-for="item in messages" :key="item.id">
               <!--  右边的气泡 -->
-              <div style="
-                  display: flex;
-                  flex-direction: row-reverse;
-                  align-items: flex-start;
-                " v-if="item.fromuser === fromUser">
-                <img :src="item.fromavatar" alt="" style="
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    margin-left: 10px;
-                  " />
+              <div style="display: flex; flex-direction: row-reverse; align-items: flex-start;"
+                v-if="item.fromuser === fromUser">
+                <img :src="item.fromavatar" alt=""
+                  style="width: 40px; height: 40px; border-radius: 50%; margin-left: 10px;" />
                 <div class="im-message im-message-right" v-html="item.content" v-if="item.type === 'text'"></div>
                 <div class="im-message" style="padding: 0" v-if="item.type === 'img'">
-                  <!-- 注意  el-image 的load函数必须加上，否则无法触发滚动条到最底端 -->
                   <el-image style="width: 100px" :src="item.content" alt="" :preview-src-list="[item.content]"
                     @load="scrollToBottom"></el-image>
                 </div>
@@ -77,19 +49,14 @@
 
               <!--  左边的气泡 -->
               <div style="display: flex; align-items: flex-start" v-else>
-                <img :src="item.fromavatar" alt="" style="
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    margin-right: 10px;
-                  " />
+                <img :src="item.fromavatar" alt=""
+                  style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;" />
                 <div style="width: 100%">
                   <div style="color: #888; font-size: 12px; width: 50%">
                     {{ item.fromuser?.substring(item.fromuser.indexOf("_") + 1) }}
                   </div>
                   <div class="im-message im-message-left" v-html="item.content" v-if="item.type === 'text'"></div>
                   <div class="im-message" style="padding: 0" v-if="item.type === 'img'">
-                    <!-- 注意  el-image 的load函数必须加上，否则无法触发滚动条到最底端 -->
                     <el-image style="width: 100px" :src="item.content" alt="" :preview-src-list="[item.content]"
                       @load="scrollToBottom"></el-image>
                   </div>
@@ -109,13 +76,7 @@
           </div>
 
           <!-- 输入区域 -->
-          <div style="
-              padding: 10px 5px;
-              border-top: 1px solid #ddd;
-              display: flex;
-              align-items: center;
-              width: 100%;
-            ">
+          <div style="padding: 10px 5px; border-top: 1px solid #ddd; display: flex; align-items: center; width: 100%;">
             <el-popover placement="top" width="300" trigger="click">
               <div class="emoji-box">
                 <span v-for="(item, index) in emojis" :key="index"
@@ -130,20 +91,11 @@
                 <i class="fa fa-folder-open-o" style="font-size: 20px; color: #666"></i>
               </el-upload>
             </div>
-            <div id="im-content" contenteditable style="
-                flex: 1;
-                background-color: #fff;
-                margin: 0 5px;
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 2px;
-                outline: none;
-                font-size: 14px;
-              "></div>
-            <el-button type="primary" @click="don" style="border: none">下载聊天记录
-            </el-button>
-            <el-button type="primary" @click="send" style="border: none">发送
-            </el-button>
+            <div id="im-content" contenteditable
+              style="flex: 1; background-color: #fff; margin: 0 5px; padding: 10px; border: 1px solid #ddd; border-radius: 2px; outline: none; font-size: 14px;">
+            </div>
+            <el-button type="primary" @click="don" style="border: none">下载聊天记录</el-button>
+            <el-button type="primary" @click="send" style="border: none">发送</el-button>
           </div>
         </div>
         <!--  中间部分结束  -->
