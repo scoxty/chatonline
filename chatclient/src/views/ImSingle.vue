@@ -2,8 +2,8 @@
   <div>
     <div class="main-body-content">
       <div style="display: flex; align-items: flex-start">
-        <div style="width: 200px; border: 1px solid #ddd; border-radius: 5px; height: calc(50vh + 125px);">
-          <div style="padding: 10px; border-bottom: 1px solid #ddd; color: #000; background-color: #eee;">
+        <div style="width: 200px; border: 1px solid #ddd; border-radius: 15px; height: calc(65vh + 125px);">
+          <div style="padding: 10px;border-radius: 15px 15px 0 0; border-bottom: 1px solid #ddd; color: #000; background-color: #eee;">
             好友
           </div>
           <div class="user-list-box">
@@ -19,9 +19,9 @@
           </div>
         </div>
         <!--  中间部分  -->
-        <div style="width: 50%; border: 1px solid #ddd; border-radius: 5px; background-color: #f1f1f1; margin: 0 10px;">
+        <div style="width: 80%; border: 1px solid #ddd; border-radius: 15px; background-color: #f1f1f1; margin: 0 10px;height: calc(65vh + 125px);">
           <div
-            style="padding: 20px 0; text-align: center; border-bottom: 1px solid #ddd; color: #000; background-color: #eee; height: 60px;">
+            style="padding: 20px 0; text-align: center;border-radius: 15px 15px 0 0; border-bottom: 1px solid #ddd; color: #000; background-color: #eee; height: 40px;">
             {{ toUser?.substring(toUser.indexOf("_") + 1) }}
           </div>
           <div class="im-message-box">
@@ -309,7 +309,7 @@ export default {
 
 <style scoped>
 .im-message-box {
-  height: 50vh;
+  height: 68vh;
   padding: 10px;
   overflow-y: auto;
   background-color: white;
