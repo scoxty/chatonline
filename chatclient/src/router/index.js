@@ -48,9 +48,9 @@ VueRouter.prototype.push = function push(location) {
 // 路由守卫
 router.beforeEach((to, from, next) => {
   const user = localStorage.getItem("user");
-  /*if (!user && to.path !== '/login' && to.path !== '/register') {
+  if (!user && to.path !== '/login' && to.path !== '/register') {
     return next("/login");
-  }*/
+  }
   next();
 })
 
