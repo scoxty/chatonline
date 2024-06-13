@@ -1,5 +1,17 @@
 package com.ncu.chatserver.service;
 
+<<<<<<< HEAD
+import com.ncu.chatserver.entity.HyyzVo;
+import com.ncu.chatserver.dao.HyDao;
+import com.ncu.chatserver.entity.Hy;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+@Service
+public class HyService{
+
+=======
 import com.ncu.chatserver.dao.HyDao;
 import com.ncu.chatserver.entity.Hy;
 import com.ncu.chatserver.entity.HyyzVo;
@@ -8,6 +20,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 public class HyService {
+>>>>>>> 75a9c5c2f99b9c3ad7beebbc8b0dd7fa2ef6a908
     @Resource
     private HyDao hyDao;
 

@@ -1,5 +1,16 @@
 package com.ncu.chatserver.controller;
 
+<<<<<<< HEAD
+import com.ncu.chatserver.entity.HyyzVo;
+import com.ncu.chatserver.utils.JwtTokenUtils;
+import com.ncu.chatserver.common.Result;
+import com.ncu.chatserver.entity.Hy;
+import com.ncu.chatserver.entity.Params;
+import com.ncu.chatserver.entity.User;
+import com.ncu.chatserver.service.HyService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+=======
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ncu.chatserver.common.Result;
@@ -9,15 +20,24 @@ import com.ncu.chatserver.entity.Params;
 import com.ncu.chatserver.entity.User;
 import com.ncu.chatserver.service.HyService;
 import com.ncu.chatserver.utils.JwtTokenUtils;
+>>>>>>> 75a9c5c2f99b9c3ad7beebbc8b0dd7fa2ef6a908
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+<<<<<<< HEAD
+
+@RestController
+@RequestMapping("/api/hy")
+public class HyController {
+
+=======
 /**
  *  描述：好友管理
  */
 public class HyController {
+>>>>>>> 75a9c5c2f99b9c3ad7beebbc8b0dd7fa2ef6a908
     @Resource
     private HyService hyService;
 
@@ -44,6 +64,12 @@ public class HyController {
     public Result add(@RequestBody Hy hy){
         User user = JwtTokenUtils.getCurrentUser();
         hy.setUserId(user.getId());
+<<<<<<< HEAD
+        if (hy.getUserId().equals(hy.getHyUserId())) {
+            return Result.error("不能添加自己为好友");
+        }
+=======
+>>>>>>> 75a9c5c2f99b9c3ad7beebbc8b0dd7fa2ef6a908
         if (hyService.isHy(hy) > 0) {
             return Result.error("你已经申请过了或者此人已是你的好友");
         }
