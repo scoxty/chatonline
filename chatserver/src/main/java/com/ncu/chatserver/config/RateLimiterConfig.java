@@ -17,10 +17,12 @@ public class RateLimiterConfig implements WebMvcConfigurer {
     @Resource
     RateLimiterInterceptor rateLimiterInterceptor;
 
+    @Resource
+    RateLimiterInterceptor rateLimiterInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(rateLimiterInterceptor)
                 .addPathPatterns("/**");
     }
-
 }
