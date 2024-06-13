@@ -1,13 +1,14 @@
-package com.example.service;
+package com.ncu.chatserver.service;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.example.common.JwtTokenUtils;
-import com.example.dao.ImGroupDao;
-import com.example.entity.ImGroup;
-import com.example.entity.User;
-import com.example.exception.CustomException;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.ncu.chatserver.utils.JwtTokenUtils;
+import com.ncu.chatserver.dao.ImGroupDao;
+import com.ncu.chatserver.entity.ImGroup;
+import com.ncu.chatserver.entity.User;
+import com.ncu.chatserver.exception.CustomException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

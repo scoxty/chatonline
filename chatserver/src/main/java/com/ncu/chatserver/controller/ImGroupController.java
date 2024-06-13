@@ -1,10 +1,10 @@
-package com.example.controller;
+package com.ncu.chatserver.controller;
 
-import com.example.common.FilePortUtil;
-import com.example.common.Result;
-import com.example.entity.ImGroup;
-import com.example.entity.ImSingle;
-import com.example.service.ImGroupService;
+
+import com.ncu.chatserver.common.Result;
+import com.ncu.chatserver.entity.ImGroup;
+import com.ncu.chatserver.service.ImGroupService;
+import com.ncu.chatserver.utils.FilePortUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

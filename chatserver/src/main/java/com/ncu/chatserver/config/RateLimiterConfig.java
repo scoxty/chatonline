@@ -1,5 +1,6 @@
 package com.ncu.chatserver.config;
 
+import com.ncu.chatserver.interceptor.RateLimiterInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -14,8 +15,12 @@ import javax.annotation.Resource;
 @Component
 public class RateLimiterConfig implements WebMvcConfigurer {
 
+    @Resource
+    RateLimiterInterceptor rateLimiterInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(rateLimiterInterceptor)
+                .addPathPatterns("/**");
     }
-
 }
