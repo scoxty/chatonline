@@ -1,17 +1,18 @@
 <template>
   <div>
     <div class="main-body-content">
-      <div style="display: flex; align-items: flex-start">
+      <div style="display: flex; align-items: flex-start; height: 80vh;">
         <div style="
             width: 200px;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            height: calc(50vh + 125px);">
+            border-radius: 10px;
+            height: 100%;">
           <div style="
               padding: 10px;
               border-bottom: 1px solid #ddd;
               color: #000;
               background-color: #eee;
+              border-radius: 10px 10px 0 0;
             ">
             好友
           </div>
@@ -29,11 +30,16 @@
         </div>
         <!--  中间部分  -->
         <div style="
-            width: 50%;
+            flex: 1;
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: #f1f1f1;
-            margin: 0 10px;">
+            margin: 0 10px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            ">
           <div style="
               padding: 20px 0;
               text-align: center;
@@ -41,6 +47,7 @@
               color: #000;
               background-color: #eee;
               height: 60px;
+              border-radius: 10px 10px 0 0;
             ">
             {{ toUser?.substring(toUser.indexOf("_") + 1) }}
           </div>
@@ -162,7 +169,7 @@
 
     <!-- 录音弹出层 -->
     <div v-if="recordingStatus !== 'idle'" class="recording-overlay">
-      <div class="recording-box">
+      <div class="recording-box" style="margin-left: 30%;">
         <div v-if="recordingStatus === 'ready'">
           <i class="fa fa-microphone" style="font-size: 100px; color: #0e81de; cursor: pointer;"></i>
           <p>按住空格键开始说话，按Esc键或点击<a @click="cancelRecording" class="cancel-link">退出</a></p>
@@ -179,7 +186,6 @@
 
   </div>
 </template>
-
 
 <script>
 import request from "@/utils/request";
@@ -361,6 +367,7 @@ export default {
           message.type = "file";
         }
         client.send(JSON.stringify(message));
+
       }
     },
     clickEmoji(emoji) {
@@ -525,7 +532,7 @@ export default {
 
 <style scoped>
 .im-message-box {
-  height: 50vh;
+  height: calc(100vh - 250px);
   padding: 10px;
   overflow-y: auto;
   background-color: white;
@@ -538,6 +545,7 @@ export default {
 }
 
 .user-list-box {
+  height: calc(100vh - 185px);
   overflow-y: auto;
 }
 

@@ -1,22 +1,23 @@
 <template>
     <div>
         <div class="main-body-content">
-            <div style="display: flex; align-items: flex-start">
+            <div style="display: flex; align-items: flex-start; height: 80vh;">
                 <div style="
               width: 200px;
-              margin-right: 10px;
               border: 1px solid #ddd;
-              border-radius: 5px;
+              border-radius: 10px;
+              height: 100%;
             ">
                     <div style="
-                padding: 20px 10px;
+                padding: 10px;
                 border-bottom: 1px solid #ddd;
                 color: #000;
                 background-color: #eee;
+                border-radius: 10px 10px 0 0;
               ">
                         在线用户({{ users.length }})
                     </div>
-                    <div class="user-list-box">
+                    <div class="user-list-box" style="border-radius: 0 0 10px 10px;">
                         <div class="user-list-item" v-for="(item, index) in users" :key="index">
                             <img :src="item.avatar" style="width: 30px; height: 30px; border-radius: 50%" />
                             <span style="margin-left: 10px">{{ item.name }}</span>
@@ -26,10 +27,15 @@
 
                 <!--  中间部分  -->
                 <div style="
-              width: 50%;
+              flex: 1;
               border: 1px solid #ddd;
               border-radius: 5px;
               background-color: #f1f1f1;
+              margin: 0 10px;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              border-radius: 10px;
             ">
                     <div style="
                 padding: 20px 0;
@@ -37,6 +43,8 @@
                 border-bottom: 1px solid #ddd;
                 color: #000;
                 background-color: #eee;
+                height: 60px;
+                border-radius: 10px 10px 0 0;
               ">
                         聊天室
                     </div>
@@ -75,9 +83,6 @@
                                         <span>{{ item.content.substring(item.content.indexOf("-") + 1) }}</span>
                                     </div>
                                 </div>
-                                <div class="im-message" style="padding: 0" v-if="item.type === 'audio'">
-                                    <audio controls :src="item.content"></audio>
-                                </div>
                             </div>
 
                             <!--  左边的气泡 -->
@@ -113,9 +118,6 @@
                                             <span>{{ item.content.substring(item.content.indexOf("-") + 1) }}</span>
                                         </div>
                                     </div>
-                                    <div class="im-message" style="padding: 0" v-if="item.type === 'audio'">
-                                        <audio controls :src="item.content"></audio>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -143,10 +145,6 @@
                                 <i class="fa fa-folder-open-o" style="font-size: 20px; color: #666"></i>
                             </el-upload>
                         </div>
-                        <div style="margin-left: 5px">
-                            <i class="fa fa-microphone" style="font-size: 22px; color: #666; cursor: pointer;"
-                                @click="showRecord"></i>
-                        </div>
                         <div id="im-content" contenteditable style="
                   flex: 1;
                   background-color: #fff;
@@ -164,48 +162,49 @@
             </div>
         </div>
 
-        <!-- 录音弹出层 -->
-        <div v-if="recordingStatus !== 'idle'" class="recording-overlay">
-            <div class="recording-box">
-                <div v-if="recordingStatus === 'ready'">
-                    <i class="fa fa-microphone" style="font-size: 100px; color: #0e81de; cursor: pointer;"></i>
-                    <p>按住空格键开始说话，按Esc键或点击<a @click="cancelRecording" class="cancel-link">退出</a></p>
-                </div>
-                <div v-if="recordingStatus === 'recording'">
-                    <p>{{ recordingTime.toFixed(1) }}s</p>
-                    <div class="microphone-animation">
-                        <div class="wave" v-for="i in 10" :key="i" :style="{ height: getWaveHeight() + 'px' }"></div>
-                    </div>
-                    <p>松手发送，按Esc键或点击<a @click="cancelRecording" class="cancel-link">取消发送</a></p>
-                </div>
+        <!-- 添加或修改服务活动管理对话框 -->
+        <el-dialog title="红包信息" :visible.sync="hongbaoopen" width="50%" append-to-body>
+            <el-form ref="form" label-width="90px">
+                <el-form-item label="红包金额" prop="money">
+                    <el-input oninput="value=value.replace(/[^0-9.]/g,'')" v-model="money" placeholder="请输入红包金额" />
+                </el-form-item>
+                <el-form-item label="领取人数" prop="shuliang">
+                    <el-input oninput="value=value.replace(/[^\d]/g,'')" v-model="shuliang" placeholder="请输入领取人数" />
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitForm">确 定</el-button>
+                <el-button @click="cancel">取 消</el-button>
             </div>
-        </div>
-
+        </el-dialog>
     </div>
 </template>
 
 <script>
 import request from "@/utils/request";
 import emojis from "@/assets/emoji";
+import hongbao from "@/assets/hongbao.png";
 import axios from 'axios';
 
 let client;
-let mediaRecorder;
-let audioChunks = [];
-let audioContext, analyser, microphone, javascriptNode;
 export default {
     data() {
         return {
+            jiluopen: false,
+            money: "",
+            shuliang: "",
+            hongbaoopen: false,
+            url: "http://localhost:8080/api/files/kai.png",
+            hongbao: hongbao,
             user: {},
+            permission: [],
             emojis: [],
             messages: [],
             users: [],
-            recordingStatus: 'idle',
-            recordingTime: 0,
-            recordingInterval: null,
-            audioLevels: []
         };
     },
+
+    // 页面加载的时候，做一些事情，在created里面
     mounted() {
         this.emojis = emojis.split(",");
         this.user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -218,68 +217,241 @@ export default {
             console.log("websocket open");
         };
         client.onclose = () => {
+            // 页面刷新的时候和后台websocket服务关闭的时候
             console.log("websocket close");
         };
         client.onmessage = (msg) => {
             if (msg.data) {
                 let json = JSON.parse(msg.data);
                 if (json.name && json.content) {
+                    // 聊天消息
                     this.messages.push(json);
-                    this.scrollToBottom();
+                    this.scrollToBottom(); // 滚动页面到最底部
                 }
                 if (json.users && json.users.length) {
                     this.users = json.users;
+                    console.log("onmessage", this.users);
                 }
             }
         };
+        // 加载聊天数据
         this.load();
-        window.addEventListener('keydown', this.handleKeyDown);
-        window.addEventListener('keyup', this.handleKeyUp);
     },
     beforeDestroy() {
         if (client) {
             client.close();
         }
-        window.removeEventListener('keydown', this.handleKeyDown);
-        window.removeEventListener('keyup', this.handleKeyUp);
     },
+    // 定义一些页面上控件出发的事件调用的方法
     methods: {
-        load() {
-            request.get("/imGroup").then((res) => {
-                if (res.code === "0") {
-                    this.messages = res.data;
-                    this.scrollToBottom();
+        submitForm() {
+            let xxx = JSON.parse(localStorage.getItem("user")).zongmoney;
+            let yyy = JSON.parse(localStorage.getItem("user"));
+            console.log("this.money", this.money);
+            console.log("this.shuliang", this.shuliang);
+            console.log("xxx", xxx);
+            if (this.money && this.shuliang) {
+                if (this.money * 1 > xxx * 1) {
+                    this.$message.error("账户余额不够");
                 } else {
-                    this.$message.error(res.msg);
+                    if (client) {
+                        let message = {
+                            name: this.user.name,
+                            content: "http://localhost:8080/api/files/cai.png",
+                            avatar: this.user.avatar,
+                            type: "img",
+                            money: this.money,
+                            shuliang: this.shuliang,
+                        };
+                        client.send(JSON.stringify(message));
+                        this.$message.success("红包发送成功！");
+
+                        yyy.zongmoney = yyy.zongmoney * 1 - this.money * 1;
+                        request.post("/user", yyy).then((res) => {
+                            if (res.code === "0") {
+                                // this.$message.success("操作成功");
+                                localStorage.setItem("user", JSON.stringify(yyy));
+                            } else {
+                                this.$message.error(res.msg);
+                            }
+                        });
+
+                        const now = new Date();
+                        const dateString =
+                            now.getFullYear() +
+                            "-" +
+                            (now.getMonth() + 1).toString().padStart(2, "0") +
+                            "-" +
+                            now.getDate().toString().padStart(2, "0");
+
+                        request
+                            .post("/logs", {
+                                name: this.user.name,
+                                content: this.money,
+                                avatar: this.user.avatar,
+                                type: 0,
+                                time: dateString,
+                            })
+                            .then((res) => {
+                                if (res.code === "0") {
+                                    // this.$message.success("操作成功");
+                                    // localStorage.setItem("user", JSON.stringify(yyy))
+                                } else {
+                                    this.$message.error(res.msg);
+                                }
+                            });
+
+                        this.hongbaoopen = false;
+                    }
                 }
-            });
-        },
-        send() {
-            let inputBox = document.getElementById("im-content");
-            const content = inputBox.innerHTML;
-            if (!content) {
-                this.$notify.error("请输入聊天内容");
-                return;
+            } else {
+                this.$message.error("请填写完整红包信息");
             }
-            if (client) {
-                let message = {
-                    name: this.user.name,
-                    content: content,
-                    avatar: this.user.avatar,
-                    type: "text",
-                };
-                client.send(JSON.stringify(message));
+        },
+        cancel() {
+            this.hongbaoopen = false;
+        },
+        getRandomNumber(min, max) {
+            var result;
+            do {
+                // 生成0到1之间的随机数
+                var randomNumber = Math.random();
+                // 将随机数映射到指定范围内
+                var scaledNumber = randomNumber * (max - min) + min;
+                // 保留两位小数
+                result = parseFloat(scaledNumber.toFixed(2));
+            } while (result == min || result == max); // 如果随机数等于min或max，则重新生成
+            return result;
+        },
+        dakai(e) {
+            console.log("e", e);
+
+            // 示例用法：生成0到10之间的随机数（包括0和10）
+
+            if (e.content == "http://localhost:8080/api/files/cai.png") {
+                // request.get('/logs').then(res => {
+                //   console.log("logslogs",res)
+                //
+                // })
+                request.get("/logs").then((res) => {
+                    console.log("logslogs", res);
+                    if (res.code === "0") {
+                        let xxx = [];
+                        let yyy = 0;
+                        let zzz = 0;
+                        res.data.forEach((item) => {
+                            if (item.type == e.id) {
+                                xxx.push(item);
+                                yyy = yyy * 1 + item.content * 1;
+                                if (
+                                    item.name == JSON.parse(localStorage.getItem("user")).name
+                                ) {
+                                    zzz = 1;
+                                }
+                            }
+                        });
+                        //限领一次
+                        if (zzz == 1) {
+                            this.$message.error("您已经领过该红包！");
+                        } else {
+                            if (xxx.length < e.shuliang) {
+                                const now = new Date();
+                                const dateString =
+                                    now.getFullYear() +
+                                    "-" +
+                                    (now.getMonth() + 1).toString().padStart(2, "0") +
+                                    "-" +
+                                    now.getDate().toString().padStart(2, "0");
+
+                                if (xxx.length == e.shuliang * 1 - 1) {
+                                    request
+                                        .post("/logs", {
+                                            name: this.user.name,
+                                            content: e.money * 1 - yyy * 1,
+                                            avatar: this.user.avatar,
+                                            type: e.id,
+                                            time: dateString,
+                                        })
+                                        .then((res) => {
+                                            console.log("领红包", res);
+                                            if (res.code === "0") {
+                                                let userinfo = JSON.parse(localStorage.getItem("user"));
+                                                userinfo.zongmoney =
+                                                    userinfo.zongmoney * 1 + e.money * 1 - yyy * 1;
+                                                request.post("/user", userinfo).then((res2) => {
+                                                    if (res2.code === "0") {
+                                                        // this.$message.success("操作成功");
+                                                        localStorage.setItem(
+                                                            "user",
+                                                            JSON.stringify(userinfo)
+                                                        );
+                                                        this.$message.success(
+                                                            "红包领取成功!金额：" + res.data.content + "元"
+                                                        );
+                                                    } else {
+                                                        this.$message.error(res2.msg);
+                                                    }
+                                                });
+                                            } else {
+                                                this.$message.error(res.msg);
+                                            }
+                                        });
+                                } else {
+                                    var randomNum = this.getRandomNumber(
+                                        0,
+                                        e.money * 1 - yyy * 1
+                                    );
+                                    console.log(randomNum);
+                                    request
+                                        .post("/logs", {
+                                            name: this.user.name,
+                                            content: randomNum,
+                                            avatar: this.user.avatar,
+                                            type: e.id,
+                                            time: dateString,
+                                        })
+                                        .then((res) => {
+                                            console.log("领红包", res);
+                                            if (res.code === "0") {
+                                                let userinfo = JSON.parse(localStorage.getItem("user"));
+                                                userinfo.zongmoney =
+                                                    userinfo.zongmoney * 1 + randomNum * 1;
+                                                request.post("/user", userinfo).then((res2) => {
+                                                    if (res2.code === "0") {
+                                                        // this.$message.success("操作成功");
+                                                        localStorage.setItem(
+                                                            "user",
+                                                            JSON.stringify(userinfo)
+                                                        );
+                                                        this.$message.success(
+                                                            "红包领取成功!金额：" + res.data.content + "元"
+                                                        );
+                                                    } else {
+                                                        this.$message.error(res2.msg);
+                                                    }
+                                                });
+                                            } else {
+                                                this.$message.error(res.msg);
+                                            }
+                                        });
+                                }
+                            } else {
+                                this.$message.error("红包已领完");
+                            }
+                        }
+
+                        // this.$message.success('欢迎进入群组聊天室')
+                    } else {
+                        this.$message.error(res.msg);
+                    }
+                });
+                // this.$message.success('恭喜抢到红包！')
             }
-            inputBox.innerHTML = "";
         },
-        clickEmoji(emoji) {
-            document.getElementById("im-content").innerHTML += emoji;
-        },
-        scrollToBottom() {
-            this.$nextTick(() => {
-                let imMessageBox = document.getElementsByClassName("im-message-box")[0];
-                imMessageBox.scrollTop = imMessageBox.scrollHeight;
-            });
+        facai() {
+            this.money = "";
+            this.shuliang = "";
+            this.hongbaoopen = true;
         },
         download(file) {
             window.open(file);
@@ -310,127 +482,70 @@ export default {
                 client.send(JSON.stringify(message));
             }
         },
-        showRecord() {
-            this.recordingStatus = 'ready';
+        load() {
+            request.get("/imGroup").then((res) => {
+                if (res.code === "0") {
+                    this.messages = res.data;
+                    this.scrollToBottom(); // 滚动条滚动到最底部
+                    this.$message.success("欢迎进入群组聊天室");
+                } else {
+                    this.$message.error(res.msg);
+                }
+            });
         },
-        getWaveHeight() {
-            return Math.random() * 20 + 5;
-        },
-        cancelRecording() {
-            this.recordingStatus = 'idle';
-            clearInterval(this.recordingInterval);
-            this.recordingInterval = null;
-            if (audioContext && audioContext.state !== 'closed') {
-                audioContext.close();
-            }
-            this.audioLevels = [];
-        },
-        startRecording() {
-            this.recordingStatus = 'recording';
-            this.recordingTime = 0;
-            audioChunks = [];
-
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then(stream => {
-                    mediaRecorder = new MediaRecorder(stream);
-                    mediaRecorder.start();
-                    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-
-                    audioContext = new AudioContext();
-                    analyser = audioContext.createAnalyser();
-                    microphone = audioContext.createMediaStreamSource(stream);
-                    javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
-
-                    analyser.smoothingTimeConstant = 0.3;
-                    analyser.fftSize = 1024;
-
-                    microphone.connect(analyser);
-                    analyser.connect(javascriptNode);
-                    javascriptNode.connect(audioContext.destination);
-
-                    javascriptNode.onaudioprocess = () => {
-                        const array = new Uint8Array(analyser.frequencyBinCount);
-                        analyser.getByteFrequencyData(array);
-                        const average = array.reduce((a, b) => a + b) / array.length;
-                        this.audioLevels = Array.from({ length: 10 }, () => average / 2);
-                    };
-
-                    this.recordingInterval = setInterval(() => {
-                        this.recordingTime += 0.1;
-                    }, 100);
-                });
-        },
-        stopRecording() {
-            if (this.recordingStatus !== 'recording') return;
-
-            mediaRecorder.stop();
-            clearInterval(this.recordingInterval);
-            this.recordingInterval = null;
-
-            if (audioContext && audioContext.state !== 'closed') {
-                audioContext.close();
-            }
-            this.audioLevels = [];
-
-            if (this.recordingTime < 1) {
-                setTimeout(() => this.cancelRecording(), 1000);
-                this.$notify.error("按键时间太短");
+        send() {
+            let inputBox = document.getElementById("im-content");
+            const content = inputBox.innerHTML;
+            if (!content) {
+                this.$notify.error("请输入聊天内容");
                 return;
             }
-
-            mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                const formData = new FormData();
-                formData.append('file', audioBlob, 'audio.mp3');
-
-                fetch('http://localhost:8080/api/files/upload', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (!data.data) {
-                            console.error("上传失败，服务器没有返回有效的URL");
-                            this.$notify.error("上传失败，服务器没有返回有效的URL");
-                            return;
-                        }
-                        let message = {
-                            name: this.user.name,
-                            content: data.data,
-                            avatar: this.user.avatar,
-                            type: 'audio',
-                        };
-                        client.send(JSON.stringify(message));
-                        this.recordingStatus = 'idle';
-                    })
-                    .catch(error => {
-                        console.error("上传失败", error);
-                        this.$notify.error("上传失败");
-                    });
-            };
-        },
-        handleKeyDown(event) {
-            if (event.key === ' ') {
-                event.preventDefault();
-                if (this.recordingStatus === 'ready') {
-                    this.startRecording();
-                }
-            } else if (event.key === 'Escape') {
-                this.cancelRecording();
+            if (client) {
+                let message = {
+                    name: this.user.name,
+                    content: content,
+                    avatar: this.user.avatar,
+                    type: "text",
+                };
+                client.send(JSON.stringify(message));
             }
+            inputBox.innerHTML = ""; // 清空输入框
         },
-        handleKeyUp(event) {
-            if (event.key === ' ' && this.recordingStatus === 'recording') {
-                this.stopRecording();
-            }
-        }
+        clickEmoji(emoji) {
+            document.getElementById("im-content").innerHTML += emoji;
+        },
+        scrollToBottom() {
+            this.$nextTick(() => {
+                // 设置聊天滚动条到底部
+                let imMessageBox = document.getElementsByClassName("im-message-box")[0];
+                //设置滚动条到最底部
+                imMessageBox.scrollTop = imMessageBox.scrollHeight;
+            });
+        },
+        don() {
+
+            axios({
+                url: "http://localhost:8080/api/imGroup/don",
+                method: 'GET',
+                responseType: 'blob', // 重要：设置响应类型为blob
+            }).then((response) => {
+                const blob = new Blob([response.data], { type: 'application/octet-stream' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = '群组的聊天记录.xls'; // 设置下载文件名
+                link.click();
+            }).catch((error) => {
+                console.error('下载文件时发生错误:', error);
+            });
+
+        },
     },
 };
 </script>
 
 <style scoped>
 .im-message-box {
-    height: 50vh;
+    flex: 1;
     padding: 10px;
     overflow-y: auto;
     background-color: white;
@@ -443,9 +558,9 @@ export default {
 }
 
 .user-list-box {
-    height: calc(50vh + 60px);
-    overflow-y: scroll;
-    background-color: #f8f8ff;
+    height: calc(100vh - 185px);
+    overflow-y: auto;
+
 }
 
 .im-message-box::-webkit-scrollbar,
@@ -503,94 +618,5 @@ export default {
 
 .user-list-item:nth-last-child(1) {
     border: none;
-}
-
-.recording-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.recording-box {
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.microphone-icon {
-    width: 24px;
-    height: 36px;
-    background-color: #0e81de;
-    border-radius: 12px 12px 4px 4px;
-    position: relative;
-    margin: 0 auto;
-}
-
-.microphone-icon::before {
-    content: '';
-    position: absolute;
-    bottom: -6px;
-    left: 50%;
-    width: 16px;
-    height: 4px;
-    background-color: #0e81de;
-    border-radius: 2px;
-    transform: translateX(-50%);
-}
-
-.microphone-icon::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: 50%;
-    width: 4px;
-    height: 14px;
-    background-color: #0e81de;
-    border-radius: 2px;
-    transform: translateX(-50%);
-}
-
-.microphone-animation {
-    width: 50px;
-    height: 50px;
-    margin: 0 auto;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-}
-
-.wave {
-    width: 5px;
-    background-color: #3a8ee6;
-    display: inline-block;
-    margin: 0 1px;
-    animation: wave 1s infinite;
-}
-
-@keyframes wave {
-    0% {
-        transform: scaleY(1);
-    }
-
-    50% {
-        transform: scaleY(1.5);
-    }
-
-    100% {
-        transform: scaleY(1);
-    }
-}
-
-.cancel-link {
-    color: #3a8ee6;
-    cursor: pointer;
 }
 </style>
