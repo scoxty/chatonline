@@ -5,14 +5,15 @@
             <el-input v-model="params.phone" style="width: 200px; margin-left: 5px" placeholder="请输入电话"></el-input>
             <el-button type="warning" style="margin-left: 10px" @click="findBySearch()">查询</el-button>
             <el-button type="warning" style="margin-left: 10px" @click="reset()">清空</el-button>
-            <el-button type="primary" style="margin-left: 10px" @click="add()" v-if="user.role === 'ADMIN'">新增</el-button>
+            <el-button type="primary" style="margin-left: 10px" @click="add()"
+                v-if="user.role === 'ADMIN'">新增</el-button>
         </div>
         <div>
             <el-table border :data="tableData" style="width: 100%">
                 <el-table-column align="center" label="头像">
                     <template v-slot="scope">
                         <el-image :src="scope.row.avatar" :preview-src-list="[scope.row.avatar]"
-                                  style="width: 50px; height: 50px; border-radius: 50%"></el-image>
+                            style="width: 50px; height: 50px; border-radius: 50%"></el-image>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" prop="name" label="姓名"></el-table-column>
@@ -35,8 +36,8 @@
         </div>
         <div style="margin-top: 10px">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                           :current-page="params.pageNum" :page-sizes="[5, 10, 15, 20]" :page-size="params.pageSize"
-                           layout="total, sizes, prev, pager, next" :total="total">
+                :current-page="params.pageNum" :page-sizes="[5, 10, 15, 20]" :page-size="params.pageSize"
+                layout="total, sizes, prev, pager, next" :total="total">
             </el-pagination>
         </div>
         <div>

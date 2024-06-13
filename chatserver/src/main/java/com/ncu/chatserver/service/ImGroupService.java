@@ -1,22 +1,13 @@
 package com.ncu.chatserver.service;
 
 import cn.hutool.core.util.ObjectUtil;
-<<<<<<< HEAD
-=======
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
->>>>>>> 75a9c5c2f99b9c3ad7beebbc8b0dd7fa2ef6a908
-import com.ncu.chatserver.utils.JwtTokenUtils;
 import com.ncu.chatserver.dao.ImGroupDao;
 import com.ncu.chatserver.entity.ImGroup;
 import com.ncu.chatserver.entity.User;
 import com.ncu.chatserver.exception.CustomException;
-<<<<<<< HEAD
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-=======
->>>>>>> 75a9c5c2f99b9c3ad7beebbc8b0dd7fa2ef6a908
+import com.ncu.chatserver.utils.JwtTokenUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,10 +18,7 @@ public class ImGroupService {
 
     @Resource
     private ImGroupDao imGroupDao;
-<<<<<<< HEAD
 
-=======
->>>>>>> 75a9c5c2f99b9c3ad7beebbc8b0dd7fa2ef6a908
     public ImGroup add(ImGroup imGroup) {
         imGroupDao.insertSelective(imGroup);
         return imGroup;

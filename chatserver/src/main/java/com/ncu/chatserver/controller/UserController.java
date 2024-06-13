@@ -1,24 +1,13 @@
 package com.ncu.chatserver.controller;
 
 import cn.hutool.core.util.ObjectUtil;
-<<<<<<< HEAD
-import com.ncu.chatserver.config.CaptureConfig;
-import com.ncu.chatserver.utils.JwtTokenUtils;
-import com.ncu.chatserver.common.Result;
-import com.ncu.chatserver.entity.Params;
-import com.ncu.chatserver.entity.User;
-import com.ncu.chatserver.service.UserService;
-import com.github.pagehelper.PageInfo;
-=======
-
 import com.github.pagehelper.PageInfo;
 import com.ncu.chatserver.common.Result;
 import com.ncu.chatserver.config.CaptureConfig;
-import com.ncu.chatserver.utils.JwtTokenUtils;
 import com.ncu.chatserver.entity.Params;
 import com.ncu.chatserver.entity.User;
 import com.ncu.chatserver.service.UserService;
->>>>>>> 75a9c5c2f99b9c3ad7beebbc8b0dd7fa2ef6a908
+import com.ncu.chatserver.utils.JwtTokenUtils;
 import com.wf.captcha.utils.CaptchaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

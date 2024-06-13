@@ -1,22 +1,13 @@
 package com.ncu.chatserver.service;
 
 import cn.hutool.core.util.ObjectUtil;
-<<<<<<< HEAD
-=======
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
->>>>>>> 75a9c5c2f99b9c3ad7beebbc8b0dd7fa2ef6a908
-import com.ncu.chatserver.utils.JwtTokenUtils;
 import com.ncu.chatserver.dao.UserDao;
 import com.ncu.chatserver.entity.Params;
 import com.ncu.chatserver.entity.User;
 import com.ncu.chatserver.exception.CustomException;
-<<<<<<< HEAD
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-=======
->>>>>>> 75a9c5c2f99b9c3ad7beebbc8b0dd7fa2ef6a908
+import com.ncu.chatserver.utils.JwtTokenUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -83,11 +74,7 @@ public class UserService {
             // 如果查出来没有，那说明输入的用户名或者密码有误，提示用户，不允许登录
             throw new CustomException("用户名或密码输入错误");
         }
-<<<<<<< HEAD
-        // 如果查出来了有，那说明确实有这个老板，而且输入的用户名和密码都对；
-=======
         // 如果查出来了有，那说明确实有这个用户，而且输入的用户名和密码都对；
->>>>>>> 75a9c5c2f99b9c3ad7beebbc8b0dd7fa2ef6a908
         // 生成该登录用户对应的token，然后跟着user一起返回到前台
         String token = JwtTokenUtils.genToken(user.getId().toString(), user.getPassword());
         user.setToken(token);
