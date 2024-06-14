@@ -5,7 +5,7 @@
                 <el-table-column align="center" label="头像">
                     <template v-slot="scope">
                         <el-image :src="scope.row.userAvatar" :preview-src-list="[scope.row.userAvatar]"
-                                  style="width: 50px; height: 50px; border-radius: 50%" />
+                            style="width: 50px; height: 50px; border-radius: 50%" />
                     </template>
                 </el-table-column>
                 <el-table-column align="center" prop="userName" label="姓名"></el-table-column>
@@ -22,8 +22,8 @@
         </div>
         <div style="margin-top: 10px">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                           :current-page="params.pageNum" :page-sizes="[5, 10, 15, 20]" :page-size="params.pageSize"
-                           layout="total, sizes, prev, pager, next" :total="total">
+                :current-page="params.pageNum" :page-sizes="[5, 10, 15, 20]" :page-size="params.pageSize"
+                layout="total, sizes, prev, pager, next" :total="total">
             </el-pagination>
         </div>
 

@@ -5,7 +5,7 @@
                 <el-table-column align="center" label="头像">
                     <template v-slot="scope">
                         <el-image :src="scope.row.userAvatar" :preview-src-list="[scope.row.userAvatar]"
-                                  style="width: 50px; height: 50px; border-radius: 50%" />
+                            style="width: 50px; height: 50px; border-radius: 50%" />
                     </template>
                 </el-table-column>
                 <el-table-column align="center" prop="userName" label="姓名"></el-table-column>
@@ -20,9 +20,9 @@
                 <el-table-column align="center" label="操作">
                     <template slot-scope="scope">
                         <el-button type="success" plain @click="handleUpdateZt(scope.row, '1')"
-                                   v-if="scope.row.zt === '0'">通过</el-button>
+                            v-if="scope.row.zt === '0'">通过</el-button>
                         <el-button type="danger" plain @click="handleUpdateZt(scope.row, '2')"
-                                   v-if="scope.row.zt === '0'">拒绝</el-button>
+                            v-if="scope.row.zt === '0'">拒绝</el-button>
                         <el-popconfirm title="确定删除吗？" @confirm="del(scope.row.id)" v-if="scope.row.zt === '2'">
                             <el-button slot="reference" type="danger" style="margin-left: 5px">删除</el-button>
                         </el-popconfirm>
@@ -32,8 +32,8 @@
         </div>
         <div style="margin-top: 10px">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                           :current-page="params.pageNum" :page-sizes="[5, 10, 15, 20]" :page-size="params.pageSize"
-                           layout="total, sizes, prev, pager, next" :total="total">
+                :current-page="params.pageNum" :page-sizes="[5, 10, 15, 20]" :page-size="params.pageSize"
+                layout="total, sizes, prev, pager, next" :total="total">
             </el-pagination>
         </div>
     </div>

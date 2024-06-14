@@ -6,7 +6,7 @@ import User from "@/views/User.vue";
 import Layout from "@/views/Layout.vue";
 import Register from "@/views/Register";
 import ImSingle from "@/views/ImSingle";
-import ImGroup from "@/views/ImGoup";
+import ImGroup from "@/views/ImGroup";
 import Person from "@/views/Person";
 import Notice from "@/views/Notice";
 import Password from "@/views/Password";
