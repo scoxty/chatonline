@@ -1,6 +1,7 @@
 package com.ncu.chatserver.controller;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.crypto.digest.Digester;
 import com.github.pagehelper.PageInfo;
 import com.ncu.chatserver.common.Result;
 import com.ncu.chatserver.config.CaptureConfig;
@@ -27,6 +28,9 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private Digester digester;
+
     @PostMapping("/login")
     public Result login(@RequestBody User user, @RequestParam String key, HttpServletRequest request) {
         String value = CaptureConfig.CAPTURE_MAP.get(key);
@@ -48,7 +52,7 @@ public class UserController {
         if (ObjectUtil.isNull(currentUser)) {
             return Result.error("token验证失效，请重新登陆");
         }
-        if (!user.getPassword().equals(currentUser.getPassword())) {
+        if (!digester.digestHex(user.getPassword()).equals(currentUser.getPassword())) {
             return Result.error("原密码输入错误");
         }
         user.setPassword(user.getNewPassword());
