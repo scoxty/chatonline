@@ -2,6 +2,9 @@ package com.ncu.chatserver.service;
 
 import cn.hutool.core.util.ObjectUtil;
 
+import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.crypto.digest.Digester;
+import cn.hutool.crypto.digest.MD5;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ncu.chatserver.utils.JwtTokenUtils;
@@ -19,6 +22,10 @@ public class UserService {
 
     @Resource
     private UserDao userDao;
+
+    @Resource
+    private Digester digester;
+
 
     public List<User> findAll() {
         return userDao.selectAll();
@@ -45,7 +52,10 @@ public class UserService {
         }
         // 初始化一个密码
         if (admin.getPassword() == null) {
-            admin.setPassword("123456");
+
+            admin.setPassword(digester.digestHex("123456"));
+        }else{
+            admin.setPassword(digester.digestHex(admin.getPassword()));
         }
         if (ObjectUtil.isEmpty(admin.getAvatar())) {
             admin.setAvatar("http://localhost:8080/api/files/qy-default.png");
@@ -70,7 +80,7 @@ public class UserService {
             throw new CustomException("密码不能为空");
         }
         // 2. 从数据库里面根据这个用户名和密码去查询对应的老板信息，
-        User user = userDao.findByNameAndPassword(admin.getName(), admin.getPassword());
+        User user = userDao.findByNameAndPassword(admin.getName(), digester.digestHex(admin.getPassword()));
         if (user == null) {
             // 如果查出来没有，那说明输入的用户名或者密码有误，提示用户，不允许登录
             throw new CustomException("用户名或密码输入错误");
