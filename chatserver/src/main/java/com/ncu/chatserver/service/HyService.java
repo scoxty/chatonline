@@ -1,16 +1,18 @@
 package com.ncu.chatserver.service;
 
+import com.ncu.chatserver.entity.HyyzVo;
 import com.ncu.chatserver.dao.HyDao;
 import com.ncu.chatserver.entity.Hy;
-import com.ncu.chatserver.entity.HyyzVo;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+@Service
 public class HyService {
+
     @Resource
     private HyDao hyDao;
-
 
     public int deleteByPrimaryKey(Integer id) {
         return hyDao.deleteByPrimaryKey(id);

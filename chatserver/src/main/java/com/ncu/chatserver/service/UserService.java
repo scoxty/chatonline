@@ -1,17 +1,16 @@
 package com.ncu.chatserver.service;
 
 import cn.hutool.core.util.ObjectUtil;
-
 import cn.hutool.crypto.digest.BCrypt;
 import cn.hutool.crypto.digest.Digester;
 import cn.hutool.crypto.digest.MD5;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.ncu.chatserver.utils.JwtTokenUtils;
 import com.ncu.chatserver.dao.UserDao;
 import com.ncu.chatserver.entity.Params;
 import com.ncu.chatserver.entity.User;
 import com.ncu.chatserver.exception.CustomException;
+import com.ncu.chatserver.utils.JwtTokenUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

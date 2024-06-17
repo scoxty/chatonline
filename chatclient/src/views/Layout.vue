@@ -48,17 +48,6 @@
               <span slot="title">系统首页</span>
             </el-menu-item>
           </el-submenu>
-          <!--
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-s-home"></i><span>企业主页</span>
-            </template>
-            <el-menu-item index="/qiye">
-              <i class="el-icon-position"></i>
-              <span slot="title">企业主页</span>
-            </el-menu-item>
-          </el-submenu>
-          -->
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-s-custom"></i><span>聊天室</span>

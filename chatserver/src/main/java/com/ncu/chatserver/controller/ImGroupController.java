@@ -1,6 +1,5 @@
 package com.ncu.chatserver.controller;
 
-
 import com.ncu.chatserver.common.Result;
 import com.ncu.chatserver.entity.ImGroup;
 import com.ncu.chatserver.service.ImGroupService;
@@ -16,9 +15,7 @@ import java.util.List;
 *  描述：群组聊天相关接口
 */
 @RestController
-
 @RequestMapping(value = "/api/imGroup")
-
 public class ImGroupController {
 
     @Resource
@@ -28,7 +25,6 @@ public class ImGroupController {
      * 描述：新增
      */
     @PostMapping
-
     public Result add(@RequestBody ImGroup imGroup) {
         imGroupService.add(imGroup);
         return Result.success(imGroup);
@@ -82,12 +78,17 @@ public class ImGroupController {
 
     @GetMapping("/don")
     public void donFromUsername(HttpServletResponse response) {
+        //从数据库查询出来的结果集
         List<ImGroup> all = imGroupService.findAll();
         System.out.println(all);
+
+        //导出的表格名称
         String title = "聊天记录";
 
+        //表中第一行表头字段
         String [] headers ={"发送人","内容","时间","类型"};
 
+        //具体需要写入excel需要的那些字段，这些字段从PprojectSalary类中拿，也就是上面的实际数据结果集的泛型
         List<String> list = Arrays.asList("name","content","time","type");
 
         try {

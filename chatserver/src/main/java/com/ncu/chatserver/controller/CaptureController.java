@@ -1,6 +1,5 @@
 package com.ncu.chatserver.controller;
 
-
 import com.ncu.chatserver.config.CaptureConfig;
 import com.wf.captcha.SpecCaptcha;
 import com.wf.captcha.base.Captcha;
@@ -20,6 +19,7 @@ public class CaptureController {
 
     @RequestMapping("/api/captcha")
     public void captcha(@RequestParam String key, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
         // png类型
         SpecCaptcha captcha = new SpecCaptcha(135, 33, 4);
         captcha.setCharType(Captcha.TYPE_NUM_AND_UPPER);

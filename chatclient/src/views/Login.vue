@@ -1,4 +1,4 @@
-x<template>
+<template>
   <div class="login-container">
     <div style="
         width: 400px;

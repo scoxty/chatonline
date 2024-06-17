@@ -5,7 +5,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-
 import com.ncu.chatserver.entity.User;
 import com.ncu.chatserver.exception.CustomException;
 import com.ncu.chatserver.service.UserService;
